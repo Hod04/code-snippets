@@ -21,3 +21,18 @@ pub struct SnippetItem {
   pub code: String,
   pub list_id: i32,
 }
+
+#[derive(Deserialize)]
+pub struct CreateSnippetList {
+  pub title: String,
+}
+
+#[derive(Deserialize)]
+pub struct CreateSnippetItem {
+  pub title: String,
+}
+
+#[derive(Serialize)]
+pub struct Response {
+  pub result: bool,
+}

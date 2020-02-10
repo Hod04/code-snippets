@@ -28,6 +28,7 @@ async fn main() -> io::Result<()> {
 			.data(pool.clone())
 			.route("/", web::get().to(status))
 			.route("/snippets{_:/?}", web::get().to(get_snippets))
+			.route("/snippets{_:/?}", web::post().to(create_snippet_list))
 	})
 	.bind(format!("{}:{}", config.server.host, config.server.port))?
 	.run()
