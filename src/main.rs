@@ -29,6 +29,27 @@ async fn main() -> io::Result<()> {
 			.route("/", web::get().to(status))
 			.route("/snippets{_:/?}", web::get().to(get_snippets))
 			.route("/snippets{_:/?}", web::post().to(create_snippet_list))
+			.route("/snippets/{list_id}{_:/?}", web::get().to(get_snippet_list))
+			.route(
+				"/snippets/{list_id}{_:/?}",
+				web::delete().to(delete_snippet_list),
+			)
+			.route(
+				"/snippets/{list_id}/items{_:/?}",
+				web::get().to(get_snippet_items),
+			)
+			.route(
+				"/snippets/{list_id}/items{_:/?}",
+				web::post().to(create_snippet_item),
+			)
+			.route(
+				"/snippets/{list_id}/items/{item_id}{_:/?}",
+				web::get().to(get_snippet_item),
+			)
+			.route(
+				"/snippets/{list_id}/items/{item_id}{_:/?}",
+				web::put().to(update_snippet_item),
+			)
 	})
 	.bind(format!("{}:{}", config.server.host, config.server.port))?
 	.run()

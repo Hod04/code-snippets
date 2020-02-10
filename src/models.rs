@@ -30,6 +30,13 @@ pub struct CreateSnippetList {
 #[derive(Deserialize)]
 pub struct CreateSnippetItem {
   pub title: String,
+  pub code: String,
+}
+
+#[derive(Deserialize)]
+pub struct UpdateSnippetItem {
+  pub title: Option<String>,
+  pub code: Option<String>,
 }
 
 #[derive(Serialize)]

@@ -11,7 +11,7 @@ CREATE TABLE snippet_item
 (
   id SERIAL PRIMARY KEY,
   title VARCHAR(150) NOT NULL,
-  code TEXT,
+  code TEXT NOT NULL DEFAULT '',
   list_id INTEGER NOT NULL,
   FOREIGN KEY (list_id) REFERENCES snippet_list(id)
 );
