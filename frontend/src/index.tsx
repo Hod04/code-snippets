@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import configureStore from "./store";
-
+import "./main.css";
 import App from "./App";
 
 const mountNode = document.getElementById("app");

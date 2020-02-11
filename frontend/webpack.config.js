@@ -30,8 +30,24 @@ const config = {
         use: ["style-loader", "css-loader", "sass-loader"]
       },
       {
-        test: /\.svg$/,
-        use: "file-loader"
+        test: /\.(ttf|eot|svg)$/,
+        use: {
+          loader: "file-loader",
+          options: {
+            name: "fonts/[hash].[ext]"
+          }
+        }
+      },
+      {
+        test: /\.(woff|woff2)$/,
+        use: {
+          loader: "url-loader",
+          options: {
+            name: "fonts/[hash].[ext]",
+            limit: 5000,
+            mimetype: "application/font-woff"
+          }
+        }
       },
       {
         test: /\.png$/,
@@ -53,7 +69,8 @@ const config = {
     }
   },
   devServer: {
-    contentBase: "./dist"
+    contentBase: "./dist",
+    port: 9000
   },
   plugins: [
     new HtmlWebpackPlugin({

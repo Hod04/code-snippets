@@ -1,11 +1,9 @@
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import thunk from "redux-thunk";
-import userReducer from "./users/reducers";
-import postsReducer from "./posts/reducers";
+import snippetListsReducer from "./snippetLists/reducers";
 
 const rootReducer = combineReducers({
-  users: userReducer,
-  posts: postsReducer
+  snippetLists: snippetListsReducer
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

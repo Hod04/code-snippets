@@ -3,6 +3,7 @@ mod db;
 mod handlers;
 mod models;
 
+use actix_cors::Cors;
 use actix_web::{web, App, HttpServer};
 use dotenv::dotenv;
 use std::io;
@@ -25,6 +26,7 @@ async fn main() -> io::Result<()> {
 
 	HttpServer::new(move || {
 		App::new()
+			.wrap(Cors::new().allowed_origin("http://localhost:9000").finish())
 			.data(pool.clone())
 			.route("/", web::get().to(status))
 			.route("/snippets{_:/?}", web::get().to(get_snippets))
