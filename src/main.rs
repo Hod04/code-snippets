@@ -50,6 +50,10 @@ async fn main() -> io::Result<()> {
 				"/snippets/{list_id}/items/{item_id}{_:/?}",
 				web::put().to(update_snippet_item),
 			)
+			.route(
+				"/snippets/{list_id}/items/{item_id}{_:/?}",
+				web::delete().to(delete_snippet_item),
+			)
 	})
 	.bind(format!("{}:{}", config.server.host, config.server.port))?
 	.run()

@@ -177,10 +177,11 @@ pub async fn update_snippet_item(
 	// @TODO - handle missing optional fields gracefully
 	let query_statement = generate_query_statement(
 		client,
-		"UPDATE snippet_item SET code = $1, title = $2
+		"UPDATE snippet_item SET code = $1, title = $2 
 		WHERE list_id = $3 and id = $4 RETURNING list_id, title, id, code",
 	)
 	.await;
+
 	let maybe_item = client
 		.query_opt(&query_statement, &[&code, &title, &list_id, &item_id])
 		.await
@@ -193,4 +194,26 @@ pub async fn update_snippet_item(
 	}
 }
 
-// @TODO - DELETE of snippet item
+// @desc Delete snippet item by id
+// @route DELETE /snippets/:snippet_list_id/items/:snippet_item_id
+pub async fn delete_snippet_item(
+	client: &Client,
+	list_id: i32,
+	item_id: i32,
+) -> Result<(), io::Error> {
+	let query_statement = generate_query_statement(
+		client,
+		"DELETE FROM snippet_item WHERE list_id = $1 and id = $2",
+	)
+	.await;
+
+	let deletion = client
+		.query_opt(&query_statement, &[&list_id, &item_id])
+		.await
+		.expect("Error deleting snippet item");
+
+	match deletion {
+		Some(_) => Ok(()),
+		None => Err(io::Error::new(io::ErrorKind::NotFound, "Not found")),
+	}
+}
