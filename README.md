@@ -7,10 +7,16 @@ An app for adding, removing and editing code snippets. Built with Actix and evtl
 - Rust
 - Docker
 - docker-compose
+- node
 
 ## Usage
 
 ```
+cd backend/
 docker-compose up -d
 cargo run --release
+```
+```
+cd frontend/
+yarn
 ```
