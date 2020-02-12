@@ -5,5 +5,19 @@ export const fetchSnippetLists = () => async (
   dispatch: Dispatch<{ type: string; payload: {} }>
 ) => {
   const response = await backendAPI.get("/snippets");
-  dispatch({ type: "FETCH_SNIPPETS", payload: response.data });
+  dispatch({ type: "FETCH_SNIPPET_LISTS", payload: response.data });
+};
+
+export const createSnippetList = (title: string) => async (
+  dispatch: Dispatch<{ type: string; payload: {} }>
+) => {
+  const response = await backendAPI.post("/snippets/", { title: title });
+  dispatch({ type: "CREATE_SNIPPET_LIST", payload: response.data });
+};
+
+export const deleteSnippetList = (id: string) => async (
+  dispatch: Dispatch<{ type: string; id: string }>
+) => {
+  await backendAPI.delete(`/snippets/${id}`);
+  dispatch({ type: "DELETE_SNIPPET_LIST", id });
 };

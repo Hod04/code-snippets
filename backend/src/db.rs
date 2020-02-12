@@ -71,19 +71,14 @@ pub async fn create_snippet_list(client: &Client, title: String) -> Result<Snipp
 
 // @desc Delete snippet list by id
 // @route DELETE /snippets/:snippet_list_id
-pub async fn delete_snippet_list(client: &Client, list_id: i32) -> Result<(), io::Error> {
+pub async fn delete_snippet_list(client: &Client, list_id: i32) -> () {
 	let query_statement =
-		generate_query_statement(client, "DELETE FROM snippet_list WHERE id = $1").await;
+		generate_query_statement(client, "DELETE FROM snippet_list WHERE id = $1 ").await;
 
-	let deletion = client
+	client
 		.query_opt(&query_statement, &[&list_id])
 		.await
 		.expect("Error deleting snippet list");
-
-	match deletion {
-		Some(_) => Ok(()),
-		None => Err(io::Error::new(io::ErrorKind::NotFound, "Not found")),
-	}
 }
 
 /*

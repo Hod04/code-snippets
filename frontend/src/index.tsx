@@ -2,10 +2,11 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import configureStore from "./store";
-import "./main.css";
+import "./main.scss";
 import App from "./App";
 
 const mountNode = document.getElementById("app");
+
 ReactDOM.render(
   <Provider store={configureStore()}>
     <App />
