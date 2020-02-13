@@ -15,8 +15,8 @@ export const createSnippetList = (title: string) => async (
   dispatch({ type: "CREATE_SNIPPET_LIST", payload: response.data });
 };
 
-export const deleteSnippetList = (id: string) => async (
-  dispatch: Dispatch<{ type: string; id: string }>
+export const deleteSnippetList = (id: number) => async (
+  dispatch: Dispatch<{ type: string; id: number }>
 ) => {
   await backendAPI.delete(`/snippets/${id}`);
   dispatch({ type: "DELETE_SNIPPET_LIST", id });

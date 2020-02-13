@@ -2,7 +2,7 @@ import * as _ from "lodash";
 
 const snippetListsReducer = (
   state = [],
-  action: { type: string; payload?: {}; id?: string }
+  action: { type: string; payload?: {}; id?: number }
 ) => {
   switch (action.type) {
     case "FETCH_SNIPPET_LISTS":
@@ -10,7 +10,7 @@ const snippetListsReducer = (
     case "CREATE_SNIPPET_LIST":
       return action.payload;
     case "DELETE_SNIPPET_LIST":
-      return _.filter(state, (elem: { id: string }) => elem.id !== action.id);
+      return _.filter(state, (elem: { id: number }) => elem.id !== action.id);
     default:
       return state;
   }

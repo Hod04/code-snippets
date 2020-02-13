@@ -53,11 +53,6 @@ pub async fn delete_snippet_list(
   let client: Client = get_client(db_pool).await;
   db::delete_snippet_list(&client, list_id.0).await;
   HttpResponse::Ok().json("Snippet list has been successfully removed")
-  // match result {
-  // Ok(_) => HttpResponse::Ok().json("Snippet list has been successfully removed"),
-  // Err(ref e) if e.kind() == NotFound => HttpResponse::NotFound().into(),
-  // Err(_) => HttpResponse::InternalServerError().into(),
-  // }
 }
 
 pub async fn create_snippet_list(
