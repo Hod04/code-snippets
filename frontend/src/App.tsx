@@ -1,6 +1,6 @@
 import * as React from "react";
-import SnippetListContainer from "./components/SnippetListContainer";
-import Menu from "./components/Menu";
+import SnippetListContainer from "./containers/SnippetListContainer";
+import Menu from "./containers/Menu";
 import { connect } from "react-redux";
 import { hot } from "react-hot-loader/root";
 import HomePage from "./components/HomePage";

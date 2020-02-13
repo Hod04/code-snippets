@@ -7,7 +7,6 @@ import {
   NavbarGroup,
   NavbarDivider,
   Tabs,
-  TabId,
   Tab,
   Icon
 } from "@blueprintjs/core";
@@ -17,7 +16,8 @@ interface State {
 }
 
 class Menu extends React.Component<any, State> {
-  handleItemClick = (tabId: TabId) => this.props.toggleMenuItem(tabId);
+  handleItemClick = (tabId: string) =>
+    this.props.toggleMenuItem(tabId as string);
 
   render() {
     const { activeMenuItem } = this.props;

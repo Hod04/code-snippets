@@ -6,8 +6,11 @@ import {
   createSnippetList,
   deleteSnippetList
 } from "../store/snippetLists/actions";
-import { fetchSnippetItems } from "../store/snippetItem/actions";
-import SnippetItems from "./SnippetItems";
+import {
+  fetchSnippetItems,
+  clearSnippetItemsList
+} from "../store/snippetItem/actions";
+import SnippetItems from "../components/SnippetItems";
 import {
   Button,
   ButtonGroup,
@@ -36,6 +39,7 @@ interface Props {
   fetchSnippetItems: (id: number) => {};
   snippetLists: SnippetList[];
   snippetItems: SnippetItem[];
+  clearSnippetItemsList: () => void;
 }
 
 interface State {
@@ -66,7 +70,13 @@ class SnippetListContainer extends React.Component<Props, State> {
   }
 
   toggleAddList = () =>
-    this.setState({ showAddListInput: !this.state.showAddListInput });
+    this.setState(
+      {
+        showAddListInput: !this.state.showAddListInput,
+        activeSnippetItemKey: undefined
+      },
+      () => this.props.clearSnippetItemsList()
+    );
 
   assignNewSnippetListTitle = (title: string) =>
     this.setState({ newSnippetListTitle: title });
@@ -82,8 +92,14 @@ class SnippetListContainer extends React.Component<Props, State> {
   };
 
   handleSnippetListClick = (id: number) => {
-    this.setState({ activeSnippetItemKey: id });
-    this.props.fetchSnippetItems(id);
+    this.state.activeSnippetItemKey !== id
+      ? this.setState({ activeSnippetItemKey: id, isLoading: true }, () => {
+          this.props.fetchSnippetItems(id);
+          this.setState({ isLoading: false });
+        })
+      : this.setState({ activeSnippetItemKey: undefined }, () =>
+          this.props.clearSnippetItemsList()
+        );
   };
 
   fetchData = () => {
@@ -103,10 +119,12 @@ class SnippetListContainer extends React.Component<Props, State> {
           : {};
         return (
           <Button
+            disabled={this.state.showAddListInput}
             minimal
             style={{
               marginLeft: 20,
-              padding: "5px 50px 5px 20px",
+              padding: "5px 50px 5px 10px",
+              display: "block",
               ...cssProps
             }}
             key={list.id}
@@ -127,7 +145,7 @@ class SnippetListContainer extends React.Component<Props, State> {
 
   render() {
     return (
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", padding: "30px 0 0 30px" }}>
         {this.state.isLoading && (
           <Portal>
             <Spinner />
@@ -138,7 +156,7 @@ class SnippetListContainer extends React.Component<Props, State> {
             <H2 style={{ padding: 20 }}>
               {"My Lists"}
               <Button
-                icon={"plus"}
+                icon={this.state.showAddListInput === false ? "plus" : "minus"}
                 minimal
                 onClick={() => this.toggleAddList()}
               />
@@ -162,9 +180,10 @@ class SnippetListContainer extends React.Component<Props, State> {
           </div>
           <ButtonGroup vertical>{this.renderSnippetLists()}</ButtonGroup>
         </div>
-        {!_.isEmpty(this.props.snippetItems) && (
-          <SnippetItems snippetItems={this.props.snippetItems} />
-        )}
+        {!_.isEmpty(this.props.snippetItems) &&
+          this.state.activeSnippetItemKey != null && (
+            <SnippetItems snippetItems={this.props.snippetItems} />
+          )}
       </div>
     );
   }
@@ -181,5 +200,6 @@ export default connect(mapStateToProps, {
   fetchSnippetLists,
   createSnippetList,
   deleteSnippetList,
-  fetchSnippetItems
+  fetchSnippetItems,
+  clearSnippetItemsList
 })(hot(SnippetListContainer));
