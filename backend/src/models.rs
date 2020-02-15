@@ -30,7 +30,6 @@ pub struct CreateSnippetList {
 #[derive(Deserialize)]
 pub struct CreateSnippetItem {
   pub title: String,
-  pub code: String,
 }
 
 #[derive(Deserialize)]

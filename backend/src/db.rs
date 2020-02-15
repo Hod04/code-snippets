@@ -138,16 +138,15 @@ pub async fn create_snippet_item(
 	client: &Client,
 	list_id: i32,
 	title: String,
-	code: String,
 ) -> Result<SnippetItem, io::Error> {
 	let query_statement = generate_query_statement(
 		client,
-		"INSERT INTO snippet_item (list_id, title, code) VALUES ($1, $2, $3) RETURNING id, title, code, list_id",
+		"INSERT INTO snippet_item (list_id, title) VALUES ($1, $2) RETURNING id, title, code, list_id",
 	)
 	.await;
 
 	client
-		.query(&query_statement, &[&list_id, &title, &code])
+		.query(&query_statement, &[&list_id, &title])
 		.await
 		.expect("Error creating snippet item")
 		.iter()

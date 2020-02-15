@@ -91,13 +91,7 @@ pub async fn create_snippet_item(
   db_pool: web::Data<Pool>,
 ) -> impl Responder {
   let client: Client = get_client(db_pool).await;
-  let result = db::create_snippet_item(
-    &client,
-    list_id.0,
-    snippet_item.title.clone(),
-    snippet_item.code.clone(),
-  )
-  .await;
+  let result = db::create_snippet_item(&client, list_id.0, snippet_item.title.clone()).await;
 
   match result {
     Ok(snippet_item) => HttpResponse::Ok().json(snippet_item),

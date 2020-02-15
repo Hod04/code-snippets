@@ -7,6 +7,8 @@ const snippetItemsReducer = (
   switch (action.type) {
     case "FETCH_SNIPPET_ITEMS":
       return action.payload;
+    case "CREATE_SNIPPET":
+      return [...state, action.payload];
     case "CLEAR_SNIPPET_ITEMS_LIST":
       return [];
     default:
