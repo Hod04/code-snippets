@@ -18,5 +18,6 @@ cargo run --release
 ```
 ```
 cd frontend/
-yarn
+npm i
+npm start
 ```
