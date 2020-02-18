@@ -70,9 +70,7 @@ class SnippetListContainer extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    !_.isEqual(prevProps, this.props) || !_.isEqual(prevState, this.state)
-      ? this.fetchData()
-      : {};
+    !_.isEqual(prevProps, this.props) ? this.fetchData() : {};
   }
 
   toggleAddList = () =>
@@ -213,7 +211,7 @@ class SnippetListContainer extends React.Component<Props, State> {
                       type="text"
                       required
                       placeholder={"Add a title"}
-                      onChange={e =>
+                      onChange={(e: any) =>
                         this.assignNewSnippetListTitle(e.target.value)
                       }
                     />

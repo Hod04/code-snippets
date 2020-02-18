@@ -32,7 +32,7 @@ class Menu extends React.Component<any, State> {
             >
               <Icon icon={"code"} />
             </Tab>
-            <NavbarDivider />
+            <NavbarDivider style={{ marginRight: "20%" }} />
             <Tab id={"snippet-lists"}>
               <Icon icon={"list"} /> {"My Lists"}
             </Tab>

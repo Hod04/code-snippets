@@ -3,6 +3,8 @@ import { hot } from "react-hot-loader/root";
 import * as _ from "lodash";
 import { SnippetItem } from "../containers/SnippetListContainer";
 import { Button, ButtonGroup } from "@blueprintjs/core";
+import { Controlled as CodeMirror } from "react-codemirror2";
+require("codemirror/mode/javascript/javascript");
 
 interface Props {
   snippetItems: SnippetItem[];
@@ -12,22 +14,22 @@ interface Props {
 interface State {
   showCode: boolean;
   activeItemId?: number;
+  code?: string;
 }
 
 class snippetItems extends React.Component<Props, State> {
   state: State = { showCode: false };
 
-  // componentDidUpdate(prevProps: Props, prevState: State) {
-  //   !_.isEqual(prevProps, this.props) || !_.isEqual(prevState, this.state);
-  //   ? this.fetchData()
-  //   : {};
-  // }
-
   handleItemClick = (id: number) => {
-    this.setState({
-      showCode: !this.state.showCode,
-      activeItemId: this.state.activeItemId !== id ? id : undefined
-    });
+    const itemBeingClickedOnceMore: boolean = this.state.activeItemId === id;
+    this.setState(
+      {
+        showCode: itemBeingClickedOnceMore ? false : true,
+        activeItemId: itemBeingClickedOnceMore ? undefined : id,
+        code: ""
+      },
+      () => this.state.showCode && this.mapCodeToState()
+    );
   };
 
   renderSnippetItems() {
@@ -57,23 +59,36 @@ class snippetItems extends React.Component<Props, State> {
     );
   }
 
-  renderCode() {
+  mapCodeToState() {
     const { activeItemId } = this.state;
     const snippet = _.find(
       this.props.snippetItems,
       item => item.id === activeItemId
     );
-    return (
-      activeItemId != null &&
-      snippet != null && <div style={{}}>{snippet.code}</div>
-    );
+    if (activeItemId != null && snippet != null) {
+      this.setState({ code: snippet.code });
+    }
   }
 
   render() {
     return (
       <div style={{ display: "flex" }}>
         <ButtonGroup vertical> {this.renderSnippetItems()}</ButtonGroup>
-        <div style={{ marginLeft: 100 }}>{this.renderCode()}</div>
+        {this.state.showCode && (
+          <div style={{ marginLeft: 200, width: 400 }}>
+            <CodeMirror
+              value={this.state.code || ""}
+              onBeforeChange={(editor, data, value) =>
+                this.setState({ code: value })
+              }
+              options={{
+                mode: "javascript",
+                lineNumbers: true,
+                theme: "material"
+              }}
+            />
+          </div>
+        )}
       </div>
     );
   }
