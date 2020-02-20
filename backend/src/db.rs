@@ -165,19 +165,18 @@ pub async fn update_snippet_item(
 	client: &Client,
 	list_id: i32,
 	item_id: i32,
-	title: Option<String>,
-	code: Option<String>,
+	// title: Option<String>,
+	code: String,
 ) -> Result<SnippetItem, io::Error> {
-	// @TODO - handle missing optional fields gracefully
 	let query_statement = generate_query_statement(
 		client,
-		"UPDATE snippet_item SET code = $1, title = $2 
-		WHERE list_id = $3 and id = $4 RETURNING list_id, title, id, code",
+		"UPDATE snippet_item SET code = $1
+		WHERE list_id = $2 and id = $3 RETURNING title, id, code",
 	)
 	.await;
 
 	let maybe_item = client
-		.query_opt(&query_statement, &[&code, &title, &list_id, &item_id])
+		.query_opt(&query_statement, &[&code, &list_id, &item_id])
 		.await
 		.expect("Error updating snippet item")
 		.map(|row| SnippetItem::from_row_ref(&row).unwrap());

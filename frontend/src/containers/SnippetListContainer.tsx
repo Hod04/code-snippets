@@ -9,7 +9,8 @@ import {
 import {
   fetchSnippetItems,
   clearSnippetItemsList,
-  createSnippet
+  createSnippet,
+  updateSnippet
 } from "../store/snippetItem/actions";
 import SnippetItems from "../components/SnippetItems";
 import {
@@ -41,6 +42,7 @@ interface Props {
   fetchSnippetItems: (listId: number) => {};
   createSnippet: (listId: number, snippetTitle: string) => {};
   clearSnippetItemsList: () => void;
+  updateSnippet: (listId: number, snippetId: number, code: string) => void;
   snippetLists: SnippetList[];
   snippetItems: SnippetItem[];
 }
@@ -70,6 +72,7 @@ class SnippetListContainer extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
+    // @TODO: introduce more constraints to fetching
     !_.isEqual(prevProps, this.props) ? this.fetchData() : {};
   }
 
@@ -226,7 +229,7 @@ class SnippetListContainer extends React.Component<Props, State> {
         {this.state.showAddListInput === false && (
           <div style={{ marginLeft: 200 }}>
             <div style={{ display: "flex", alignItems: "baseline" }}>
-              <H2 style={{ padding: "50px 20px 30px 0px" }}>
+              <H2 style={{ padding: "50px 20px 20px 0px" }}>
                 {"Code Snippets"}
                 <Button
                   icon={
@@ -252,8 +255,11 @@ class SnippetListContainer extends React.Component<Props, State> {
             {!_.isEmpty(this.props.snippetItems) &&
               this.state.activeSnippetListKey != null && (
                 <SnippetItems
+                  fetchSnippetItems={this.props.fetchSnippetItems}
                   newSnippetFormActive={this.state.showAddSnippetInput}
                   snippetItems={this.props.snippetItems}
+                  updateSnippet={this.props.updateSnippet}
+                  activeSnippetListKey={this.state.activeSnippetListKey}
                 />
               )}
           </div>
@@ -276,5 +282,6 @@ export default connect(mapStateToProps, {
   deleteSnippetList,
   fetchSnippetItems,
   clearSnippetItemsList,
-  createSnippet
+  createSnippet,
+  updateSnippet
 })(hot(SnippetListContainer));

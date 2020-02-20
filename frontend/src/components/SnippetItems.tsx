@@ -9,6 +9,9 @@ require("codemirror/mode/javascript/javascript");
 interface Props {
   snippetItems: SnippetItem[];
   newSnippetFormActive: boolean;
+  updateSnippet: (listId: number, snippetId: number, code: string) => void;
+  activeSnippetListKey: number;
+  fetchSnippetItems: (listId: number) => void;
 }
 
 interface State {
@@ -20,6 +23,12 @@ interface State {
 class snippetItems extends React.Component<Props, State> {
   state: State = { showCode: false };
 
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.activeSnippetListKey !== prevProps.activeSnippetListKey) {
+      this.setState({ showCode: false, code: undefined });
+    }
+  }
+
   handleItemClick = (id: number) => {
     const itemBeingClickedOnceMore: boolean = this.state.activeItemId === id;
     this.setState(
@@ -30,6 +39,18 @@ class snippetItems extends React.Component<Props, State> {
       },
       () => this.state.showCode && this.mapCodeToState()
     );
+  };
+
+  handleSaveCode = async () => {
+    if (this.state.activeItemId == null) {
+      return;
+    }
+    await this.props.updateSnippet(
+      this.props.activeSnippetListKey,
+      this.state.activeItemId,
+      this.state.code || ""
+    );
+    this.props.fetchSnippetItems(this.props.activeSnippetListKey);
   };
 
   renderSnippetItems() {
@@ -75,7 +96,7 @@ class snippetItems extends React.Component<Props, State> {
       <div style={{ display: "flex" }}>
         <ButtonGroup vertical> {this.renderSnippetItems()}</ButtonGroup>
         {this.state.showCode && (
-          <div style={{ marginLeft: 200, width: 400 }}>
+          <div style={{ marginLeft: 250, width: 400 }}>
             <CodeMirror
               value={this.state.code || ""}
               onBeforeChange={(editor, data, value) =>
@@ -86,6 +107,16 @@ class snippetItems extends React.Component<Props, State> {
                 lineNumbers: true,
                 theme: "material"
               }}
+            />
+            <Button
+              style={{
+                marginTop: 5,
+                fontWeight: 700,
+                color: "white",
+                background: "rgb(57, 75, 89)"
+              }}
+              text={"Save"}
+              onClick={this.handleSaveCode}
             />
           </div>
         )}

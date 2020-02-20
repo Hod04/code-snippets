@@ -119,14 +119,7 @@ pub async fn update_snippet_item(
   db_pool: web::Data<Pool>,
 ) -> impl Responder {
   let client: Client = get_client(db_pool).await;
-  let result = db::update_snippet_item(
-    &client,
-    ids.0,
-    ids.1,
-    snippet_item.title.clone(),
-    snippet_item.code.clone(),
-  )
-  .await;
+  let result = db::update_snippet_item(&client, ids.0, ids.1, snippet_item.code.clone()).await;
 
   match result {
     Ok(item) => HttpResponse::Ok().json(item),

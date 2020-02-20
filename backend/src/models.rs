@@ -19,7 +19,6 @@ pub struct SnippetItem {
   pub id: i32,
   pub title: String,
   pub code: String,
-  pub list_id: i32,
 }
 
 #[derive(Deserialize)]
@@ -34,8 +33,7 @@ pub struct CreateSnippetItem {
 
 #[derive(Deserialize)]
 pub struct UpdateSnippetItem {
-  pub title: Option<String>,
-  pub code: Option<String>,
+  pub code: String,
 }
 
 #[derive(Serialize)]
