@@ -1,6 +1,6 @@
 # Code-Snippets App
 
-An app for adding, removing and editing code snippets. Built with Actix and evtl. with React & Redux on the client side.
+An app for adding, removing and editing code snippets. Built with Actix and React.
 
 ## Prerequisites
 
