@@ -42,7 +42,7 @@
     "@types/node": "^13.5.2",
     "@types/react-codemirror": "^1.0.3",
     "@types/react-redux": "^7.1.7",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "codemirror": "^5.51.0",
     "lodash": "^4.17.15",
     "react": "^16.12.0",
